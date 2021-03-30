@@ -1,0 +1,6 @@
+build/
+ddir/
+sdir/
+cmake-build-debug/
+.idea/
+CMakeLists.txt
