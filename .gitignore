@@ -3,4 +3,6 @@ ddir/
 sdir/
 cmake-build-debug/
 .idea/
+.run/
+test.txt
 CMakeLists.txt

@@ -45,10 +45,8 @@ bool Client::execute(const std::string &line, SpellChecker &checker) {
     try {
       m_N = std::stod(value);
       std::cerr << "your number: " << m_N << '\n';
-    } catch (std::invalid_argument &e) {
+    } catch (const std::invalid_argument &e) {
       std::cerr << "Invalid input\n";
-    } catch (std::out_of_range &e) {
-      std::cerr << "out of range number\n";
     }
 
   } else if (line == "set word count") {
@@ -57,9 +55,9 @@ bool Client::execute(const std::string &line, SpellChecker &checker) {
     try {
       m_wordCount = std::stoi(value);
       std::cerr << "your number: " << m_wordCount << '\n';
-    } catch (std::invalid_argument &e) {
+    } catch (const std::invalid_argument &e) {
       std::cerr << "Invalid input\n";
-    } catch (std::out_of_range &e) {
+    } catch (const std::out_of_range &e) {
       std::cerr << "out of range number\n";
     }
 

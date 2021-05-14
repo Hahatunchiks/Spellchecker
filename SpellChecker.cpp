@@ -32,8 +32,6 @@ std::vector<std::pair<double, std::string>> SpellChecker::check(const double &N)
       unusualWords.emplace_back(val, word.substr(1, word.size() - 2));
     }
   }
-  std::sort(unusualWords.begin(), unusualWords.end(), [](std::pair<double, std::string> &l, std::pair<double, std::string> &r) {
-              return l.first > r.first;
-            });
+  std::sort(unusualWords.rbegin(), unusualWords.rend());
   return unusualWords;
 }

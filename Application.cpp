@@ -6,7 +6,7 @@ void Application::start(const std::string &filename) {
   std::cerr << "If you want check your text write 'check'" << '\n';
   std::cerr << "If you want view the list of commands write 'help'" << '\n';
   std::string line;
-  m_command = new Client();
+
   SpellChecker checker;
   checker.ngrams.setNgrams(filename);
   checker.calculateWordsIndexes(checker.ngrams.getTrigrams(),
@@ -14,8 +14,7 @@ void Application::start(const std::string &filename) {
                                 checker.ngrams.getTrigramCount());
   while (true) {
     std::getline(std::cin, line);
-    if (std::cin.eof() || !m_command->execute(line, checker)) {
-      delete m_command;
+    if (std::cin.eof() || !m_command.execute(line, checker)) {
       break;
     }
   }

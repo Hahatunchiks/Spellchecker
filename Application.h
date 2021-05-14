@@ -7,7 +7,7 @@ class Application {
  public:
   void start(const std::string &filename);
  private:
-  Client *m_command;
+  Client m_command;
 };
 
 #endif //SPELLCHECKER__APPLICATION_H_
