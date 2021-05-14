@@ -1,18 +1,18 @@
 #include "Client.h"
-void printNgrams(const std::map<std::string, std::vector<std::string>> &words) {
-  for (const auto &i : words) {
-    std::cout << i.first.substr(1, i.first.size() - 2) << ":\n";
-    for (const auto &j : i.second) {
+void printNgrams(const std::map<std::string, std::set<std::string>> &words) {
+  for (const auto &[word, ngrams] : words) {
+    std::cout << word.substr(1, word.size() - 2) << ":\n";
+    for (const auto &j : ngrams) {
       std::cout << j << ' ';
     }
     std::cout << '\n';
   }
 }
 
-void printUnusualWords(const std::vector<std::string> &words, int wordCount) {
+void printUnusualWords(const std::vector<std::pair<double, std::string>> &words, const int &wordCount) {
   int counter = 0;
   for (const auto &i : words) {
-    std::cout << i << " ";
+    std::cout << i.second << " ";
     ++counter;
     if (counter == wordCount) {
       break;
@@ -21,56 +21,50 @@ void printUnusualWords(const std::vector<std::string> &words, int wordCount) {
   std::cout << '\n';
 }
 
-bool checkNumber(const std::string &N) {
-  for (const auto &i : N) {
-    if (!isdigit(i)) {
-      std::cout << "Incorrect value for N\n";
-      return false;
-    }
-  }
-  return true;
-}
-bool Client::execute(const std::string &line, std::string &filename) {
+bool Client::execute(const std::string &line, SpellChecker &checker) {
   std::string value;
-  SpellChecker checker = {};
-  Ngrams ngrams = {};
-  this->text.readText(filename);
-  std::vector<std::string> words = this->text.getText();
   if (line == "check") {
-    std::vector<std::string> unusualWords = checker.check(words, this->N);
-    printUnusualWords(unusualWords, this->wordCount);
+    std::vector<std::pair<double, std::string>> unusualWords = checker.check(m_N);
+    printUnusualWords(unusualWords, m_wordCount);
 
   } else if (line == "help") {
-    HelpCommand helpCommand = {};
-    helpCommand.printCommandsDescription();
+    printCommandDescription();
 
   } else if (line == "exit") {
     return false;
 
   } else if (line == "print diagrams") {
-    ngrams.setDiagrams(words);
-    printNgrams(ngrams.getDiagrams());
+    printNgrams(checker.ngrams.getDiagrams());
 
   } else if (line == "print trigrams") {
-    ngrams.setTrigrams(words);
-    printNgrams(ngrams.getTrigrams());
+    printNgrams(checker.ngrams.getTrigrams());
 
   } else if (line == "set N") {
-    std::cout << "write N\n";
+    std::cerr << "write N\n";
     std::getline(std::cin, value);
-    if (checkNumber(value)) {
-      this->N = std::stod(value);
+    try {
+      m_N = std::stod(value);
+      std::cerr << "your number: " << m_N << '\n';
+    } catch (std::invalid_argument &e) {
+      std::cerr << "Invalid input\n";
+    } catch (std::out_of_range &e) {
+      std::cerr << "out of range number\n";
     }
 
   } else if (line == "set word count") {
-    std::cout << "write word count\n";
+    std::cerr << "write word count\n";
     std::getline(std::cin, value);
-    if (checkNumber(value)) {
-      this->wordCount = std::stoi(value);
+    try {
+      m_wordCount = std::stoi(value);
+      std::cerr << "your number: " << m_wordCount << '\n';
+    } catch (std::invalid_argument &e) {
+      std::cerr << "Invalid input\n";
+    } catch (std::out_of_range &e) {
+      std::cerr << "out of range number\n";
     }
 
   } else {
-    std::cout << "Wrong command\n";
+    std::cerr << "Wrong command\n";
 
   }
   return true;

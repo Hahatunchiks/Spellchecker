@@ -4,20 +4,21 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <set>
+#include <fstream>
 
 class Ngrams {
  public:
-  void setDiagrams(const std::vector<std::string> &text);
-  void setTrigrams(const std::vector<std::string> &text);
-  std::map<std::string, std::vector<std::string>> getDiagrams();
-  std::map<std::string, std::vector<std::string>> getTrigrams();
-  std::map<std::string, int> getDiagramCount();
-  std::map<std::string, int> getTrigramCount();
+  void setNgrams(const std::string &filename);
+  const std::map<std::string, std::set<std::string>> &getDiagrams();
+  const std::map<std::string, std::set<std::string>> &getTrigrams();
+  std::map<std::string, int> &getDiagramCount();
+  std::map<std::string, int> &getTrigramCount();
  private:
-  std::map<std::string, std::vector<std::string>> diagrams;
-  std::map<std::string, std::vector<std::string>> trigrams;
-  std::map<std::string, int> diagramCount;
-  std::map<std::string, int> trigramCount;
+  std::map<std::string, std::set<std::string>> m_diagrams;
+  std::map<std::string, std::set<std::string>> m_trigrams;
+  std::map<std::string, int> m_diagramCount;
+  std::map<std::string, int> m_trigramCount;
 };
 
 #endif //SPELLCHECKER__NGRAMS_H_

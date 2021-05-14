@@ -1,15 +1,17 @@
 #ifndef SPELLCHECKER__SPELLCHECKER_H_
 #define SPELLCHECKER__SPELLCHECKER_H_
-#include <vector>
-#include <string>
 #include <cmath>
+#include <algorithm>
 #include "Ngrams.h"
 class SpellChecker {
  public:
-  std::vector<std::string> check(const std::vector<std::string> &text, double N);
+  std::vector<std::pair<double, std::string>> check(const double &N);
+  void calculateWordsIndexes(const std::map<std::string, std::set<std::string>> &trigrams,
+                             std::map<std::string, int> &diagramCount,
+                             std::map<std::string, int> &trigramCount);
+  Ngrams ngrams;
  private:
-  std::map<std::string, double> wordIndexes;
-  Ngrams ngrams = {};
+  std::map<std::string, double> m_wordIndexes;
 };
 
 #endif

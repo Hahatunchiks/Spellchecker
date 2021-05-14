@@ -1,32 +1,58 @@
+#include <iostream>
 #include "Ngrams.h"
 
-std::map<std::string, std::vector<std::string>> Ngrams::getDiagrams() {
-  return this->diagrams;
+const std::map<std::string, std::set<std::string>> &Ngrams::getDiagrams() {
+  return m_diagrams;
 }
-std::map<std::string, std::vector<std::string>> Ngrams::getTrigrams() {
-  return this->trigrams;
+const std::map<std::string, std::set<std::string>> &Ngrams::getTrigrams() {
+  return m_trigrams;
 }
-std::map<std::string, int> Ngrams::getDiagramCount() {
-  return this->diagramCount;
+std::map<std::string, int> &Ngrams::getDiagramCount() {
+  return m_diagramCount;
 }
-std::map<std::string, int> Ngrams::getTrigramCount() {
-  return this->trigramCount;
+std::map<std::string, int> &Ngrams::getTrigramCount() {
+  return m_trigramCount;
 }
-void Ngrams::setTrigrams(const std::vector<std::string> &text) {
-  for (const auto &i : text) {
-    for (int j = 0; j < i.size() - 2; j++) {
-      std::string trigramWord = i.substr(j, 3);
-      this->trigrams[i].push_back(trigramWord);
-      this->trigramCount[trigramWord]++;
+void Ngrams::setNgrams(const std::string &filename) {
+  std::string s;
+  char symbol;
+  std::string word = ".";
+  std::ifstream input(filename);
+  if (!input.is_open()) {
+    std::cerr << "Wrong filename\n";
+    std::exit(-1);
+  }
+  while (input.get(symbol)) {
+    if (!isspace(symbol)) {
+      if (isalpha(symbol)) {
+        word += tolower(symbol);
+      }
+    } else if (word != ".") {
+      word += '.';
+      for (int i = 0; i < word.size() - 2; i++) {
+        std::string substring = word.substr(i, 3);
+        m_trigrams[word].insert(substring);
+        m_trigramCount[substring]++;
+      }
+      for (int i = 0; i < word.size() - 1; i++) {
+        std::string substring = word.substr(i, 2);
+        m_diagrams[word].insert(substring);
+        m_diagramCount[substring]++;
+      }
+      word = ".";
     }
   }
-}
-void Ngrams::setDiagrams(const std::vector<std::string> &text) {
-  for (const auto &i : text) {
-    for (int j = 0; j < i.size() - 1; j++) {
-      std::string substring = i.substr(j, 2);
-      this->diagrams[i].push_back(substring);
-      this->diagramCount[substring]++;
+  if (word != ".") {
+    word += '.';
+    for (int i = 0; i < word.size() - 2; i++) {
+      std::string substring = word.substr(i, 3);
+      m_trigrams[word].insert(substring);
+      m_trigramCount[substring]++;
+    }
+    for (int i = 0; i < word.size() - 1; i++) {
+      std::string substring = word.substr(i, 2);
+      m_diagrams[word].insert(substring);
+      m_diagramCount[substring]++;
     }
   }
 }
