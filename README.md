@@ -52,6 +52,6 @@ Program that show's you unusual words in the text:
 
    `set word count` - set count of words that program will print
 
-   `print diagrams / print trigrams` - print words and their N-grams
+   `print digrams / print trigrams` - print words and their N-grams
 
    `exit` - exit the program

@@ -1,4 +1,6 @@
 #include "Client.h"
+#include <algorithm>
+
 void printNgrams(const std::map<std::string, std::set<std::string>> &words) {
   for (const auto &[word, ngrams] : words) {
     std::cout << word.substr(1, word.size() - 2) << ":\n";
@@ -26,19 +28,14 @@ bool Client::execute(const std::string &line, SpellChecker &checker) {
   if (line == "check") {
     std::vector<std::pair<double, std::string>> unusualWords = checker.check(m_N);
     printUnusualWords(unusualWords, m_wordCount);
-
   } else if (line == "help") {
     printCommandDescription();
-
   } else if (line == "exit") {
     return false;
-
-  } else if (line == "print diagrams") {
-    printNgrams(checker.ngrams.getDiagrams());
-
+  } else if (line == "print digrams") {
+    printNgrams(checker.ngrams.getDigrams());
   } else if (line == "print trigrams") {
     printNgrams(checker.ngrams.getTrigrams());
-
   } else if (line == "set N") {
     std::cerr << "write N\n";
     std::getline(std::cin, value);
@@ -46,9 +43,10 @@ bool Client::execute(const std::string &line, SpellChecker &checker) {
       m_N = std::stod(value);
       std::cerr << "your number: " << m_N << '\n';
     } catch (const std::invalid_argument &e) {
-      std::cerr << "Invalid input\n";
+      std::cerr << "Invalid input: number expected\n";
+    } catch (const std::out_of_range &e) {
+      std::cerr << "Invalid input: overflow\n";
     }
-
   } else if (line == "set word count") {
     std::cerr << "write word count\n";
     std::getline(std::cin, value);
@@ -56,14 +54,12 @@ bool Client::execute(const std::string &line, SpellChecker &checker) {
       m_wordCount = std::stoi(value);
       std::cerr << "your number: " << m_wordCount << '\n';
     } catch (const std::invalid_argument &e) {
-      std::cerr << "Invalid input\n";
+      std::cerr << "Invalid input: integer expected\n";
     } catch (const std::out_of_range &e) {
-      std::cerr << "out of range number\n";
+      std::cerr << "Invalid input: overflow\n";
     }
-
   } else {
-    std::cerr << "Wrong command\n";
-
+    std::cerr << "Unknown command\n";
   }
   return true;
 }

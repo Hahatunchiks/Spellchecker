@@ -1,8 +1,8 @@
 #ifndef SPELLCHECKER__CLIENT_H_
 #define SPELLCHECKER__CLIENT_H_
 #include <iostream>
-#include <algorithm>
 #include "SpellChecker.h"
+
 class Client {
  public:
   bool execute(const std::string &line,SpellChecker &checker);
