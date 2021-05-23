@@ -28,7 +28,7 @@ build_release:
 
 _release:  CXXFLAGS+=$(CXXFLAGS_RELEASE)
 _release:  $(BUILDDIR)/main.o $(BUILDDIR)/Client.o $(BUILDDIR)/Ngrams.o $(BUILDDIR)/SpellChecker.o $(BUILDDIR)/Application.o
-	$(CXX) -o $(BUILDDIR)/Program $^  -lstdc++ $(CXXFLAGS)
+	$(CXX) -o $(BUILDDIR)/Program $^  -lstdc++
 
 release: build_release _release
 
@@ -56,7 +56,7 @@ build_debug:
 
 _debug: CXXFLAGS+=$(CXXFLAGS_DEBUG)
 _debug:    $(DEBUGDIR)/main.o $(DEBUGDIR)/Client.o $(DEBUGDIR)/Ngrams.o $(DEBUGDIR)/SpellChecker.o $(DEBUGDIR)/Application.o
-	$(CXX) -o $(DEBUGDIR)/Program $^  -lstdc++ $(CXXFLAGS)
+	$(CXX) -o $(DEBUGDIR)/Program $^  -lstdc++
 
 debug: build_debug _debug
 
