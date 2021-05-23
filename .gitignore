@@ -1,8 +1,12 @@
-build/
-ddir/
-sdir/
+build_release/
+build_debug/
+build_sanitized/
 cmake-build-debug/
 .idea/
 .run/
 test.txt
+test1.txt
+build_sanitized
+build_release
+build_debug
 CMakeLists.txt
